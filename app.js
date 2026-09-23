@@ -27,10 +27,12 @@ app.post('/assignments', async (req,res) => {
 
 app.get('/assignments', async (req, res) => {
     try{
-        let result = await pool.query(
-            `SELECT * FROM assignments
-            ORDER BY id DESC;`
-        );
+        const { submitted } = req.query;
+        const query = submitted === undefined
+            ? 'SELECT * FROM assignments ORDER BY id DESC'
+            : 'SELECT * FROM assignments WHERE submitted = $1 ORDER BY id DESC';
+        const values = submitted === undefined ? [] : [submitted === 'true'];
+        const result = await pool.query(query, values);
         res.status(200).json(result.rows);
     }catch(err){
         console.log(err.message);
@@ -81,24 +83,6 @@ app.delete('/assignments/:id', async(req, res) => {
         res.status(200).json(result.rows[0])
     }catch(err){
         console.log(err.message)
-        res.status(500).json({
-            errorMessage: 'Server Band Ha Sir'
-        });
-    }
-});
-
-app.get('/assignments', async (req, res) => {
-    try{
-        const { submitted } = req.params;
-        let result = await pool.query(
-            `SELECT * FROM assignments
-                WHERE submitted = $1
-                    ORDER BY id DESC`,
-                    [submitted]
-        );
-        res.status(200).json(result.rows);
-    }catch(err){
-        console.log(err.message);
         res.status(500).json({
             errorMessage: 'Server Band Ha Sir'
         });
