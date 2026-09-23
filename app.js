@@ -69,7 +69,7 @@ app.patch('/assignments/:id', async(req, res) => {
 app.delete('/assignments/:id', async(req, res) => {
     try{
         const { id } = req.params;
-        let result = await pool.query(
+        const result = await pool.query(
             `DELETE FROM assignments
                 WHERE id = $1
                  RETURNING *;`,
@@ -77,10 +77,13 @@ app.delete('/assignments/:id', async(req, res) => {
         );
         if(result.rows.length === 0){
             return res.status(404).json({
-                errorMessage: 'Assignments Not Found'
+                message: 'Assignment not found'
             });
         }
-        res.status(200).json(result.rows[0])
+        res.status(200).json({
+            message: 'Assignment deleted successfully',
+            assignment: result.rows[0]
+        });
     }catch(err){
         console.log(err.message)
         res.status(500).json({
