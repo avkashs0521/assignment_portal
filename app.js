@@ -54,7 +54,7 @@ app.patch('/assignments/:id', async(req, res) => {
         );
         if(result.rows.length === 0){
             return res.status(404).json({
-                message: 'Assignments Not Found'
+                message: 'Assignment not found'
             });
         };
         res.status(200).json(result.rows[0]);
