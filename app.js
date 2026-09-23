@@ -37,7 +37,7 @@ app.get('/assignments', async (req, res) => {
     }catch(err){
         console.log(err.message);
         res.status(500).json({
-            errorMessage: 'Server Down Ha Sir.'
+            errorMessage: 'server down.'
         });
     }
 });
@@ -61,7 +61,7 @@ app.patch('/assignments/:id', async(req, res) => {
     }catch(err){
     console.log(err.message);
     res.status(502).json({
-        errorMessage: 'Server Band Ha Sir'
+        errorMessage: 'server closed'
     });
     }
 });
@@ -87,11 +87,11 @@ app.delete('/assignments/:id', async(req, res) => {
     }catch(err){
         console.log(err.message)
         res.status(500).json({
-            errorMessage: 'Server Band Ha Sir'
+            errorMessage: 'server closed'
         });
     }
 });
 
 app.listen(PORT, () => {
-    console.log('Welcome to the server Null Vector');
+    console.log('Server is running on port ' + PORT);
 })
